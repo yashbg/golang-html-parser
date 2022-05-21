@@ -3,6 +3,8 @@ package task
 import (
 	"bytes"
 	"errors"
+	"io/ioutil"
+
 	"golang.org/x/net/html"
 )
 
@@ -11,7 +13,8 @@ var ErrNotImplemented = errors.New("function not implemented")
 // ReadHTMLFromFile should read the file from the current directory, if it exists.
 // The file data should be returned as a string.
 func ReadHTMLFromFile(fileName string) (string, error) {
-	return "", ErrNotImplemented
+	content, err := ioutil.ReadFile(fileName)
+	return string(content), err
 }
 
 // CreateBuffer should transfer the contents of a string to a buffer.
