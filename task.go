@@ -30,9 +30,14 @@ func CreateTree(buf bytes.Buffer) (*html.Node, error) {
 
 // CountDivTags should return the count of <div> tags in the document tree.
 func CountDivTags(node *html.Node) int {
-	tagsCount := make(map[string]int)
-	dfs(node, tagsCount)
-	return tagsCount["div"]
+	count := 0
+	if node.DataAtom.String() == "div" {
+		count++
+	}
+	for child := node.FirstChild; child != nil; child = child.NextSibling {
+		count += CountDivTags(child)
+	}
+	return count
 }
 
 // dfs is a utility function which will help you count the number of unique tags.
