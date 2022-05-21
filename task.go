@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"errors"
 	"io/ioutil"
+	"sort"
 
 	"golang.org/x/net/html"
 )
@@ -36,7 +37,9 @@ func CountDivTags(node *html.Node) int {
 
 // dfs is a utility function which will help you count the number of unique tags.
 func dfs(node *html.Node, tagsCount map[string]int) {
-	tagsCount[node.DataAtom.String()]++
+	if node.Type == html.ElementNode {
+		tagsCount[node.DataAtom.String()]++
+	}
 	for child := node.FirstChild; child != nil; child = child.NextSibling {
 		dfs(child, tagsCount)
 	}
@@ -45,7 +48,14 @@ func dfs(node *html.Node, tagsCount map[string]int) {
 // ExtractAllUniqueTagsInSortedOrder should return the unique tags in the document.
 // These tags should also be sorted alphabetically.
 func ExtractAllUniqueTagsInSortedOrder(node *html.Node) []string {
-	return nil
+	tagsCount := make(map[string]int)
+	dfs(node, tagsCount)
+	var tags []string
+	for tag := range tagsCount {
+		tags = append(tags, tag)
+	}
+	sort.Strings(tags)
+	return tags
 }
 
 // ExtractAllComments returns the list of all comments as they appear in the document.
