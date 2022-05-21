@@ -19,7 +19,7 @@ func ReadHTMLFromFile(fileName string) (string, error) {
 
 // CreateBuffer should transfer the contents of a string to a buffer.
 func CreateBuffer(data string) bytes.Buffer {
-	return bytes.Buffer{}
+	return *bytes.NewBufferString(data)
 }
 
 // CreateTree should create the tree representation of HTML represented by the buffer.
