@@ -29,11 +29,17 @@ func CreateTree(buf bytes.Buffer) (*html.Node, error) {
 
 // CountDivTags should return the count of <div> tags in the document tree.
 func CountDivTags(node *html.Node) int {
-	return -1
+	tagsCount := make(map[string]int)
+	dfs(node, tagsCount)
+	return tagsCount["div"]
 }
 
 // dfs is a utility function which will help you count the number of unique tags.
 func dfs(node *html.Node, tagsCount map[string]int) {
+	tagsCount[node.DataAtom.String()]++
+	for child := node.FirstChild; child != nil; child = child.NextSibling {
+		dfs(child, tagsCount)
+	}
 }
 
 // ExtractAllUniqueTagsInSortedOrder should return the unique tags in the document.
