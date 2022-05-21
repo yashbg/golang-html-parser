@@ -80,5 +80,16 @@ func ExtractAllComments(node *html.Node) []string {
 
 // ExtractAllLinks returns all the links in the document, in order of appearance.
 func ExtractAllLinks(node *html.Node) []string {
-	return nil
+	var links []string
+	if node.DataAtom.String() == "a" {
+		for _, attr := range node.Attr {
+			if attr.Key == "href" {
+				links = append(links, attr.Val)
+			}
+		}
+	}
+	for child := node.FirstChild; child != nil; child = child.NextSibling {
+		links = append(links, ExtractAllLinks(child)...)
+	}
+	return links
 }
