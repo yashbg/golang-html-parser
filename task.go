@@ -5,6 +5,7 @@ import (
 	"errors"
 	"io/ioutil"
 	"sort"
+	"strings"
 
 	"golang.org/x/net/html"
 )
@@ -67,7 +68,14 @@ func ExtractAllUniqueTagsInSortedOrder(node *html.Node) []string {
 // You also need to remove all the leading and trailing spaces in the comments.
 // HINT: You might need to read about variadic functions.
 func ExtractAllComments(node *html.Node) []string {
-	return nil
+	var comments []string
+	if node.Type == html.CommentNode {
+		comments = append(comments, strings.TrimSpace(node.Data))
+	}
+	for child := node.FirstChild; child != nil; child = child.NextSibling {
+		comments = append(comments, ExtractAllComments(child)...)
+	}
+	return comments
 }
 
 // ExtractAllLinks returns all the links in the document, in order of appearance.
