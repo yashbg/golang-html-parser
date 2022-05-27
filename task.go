@@ -26,7 +26,7 @@ func CreateBuffer(data string) bytes.Buffer {
 
 // CreateTree should create the tree representation of HTML represented by the buffer.
 func CreateTree(buf bytes.Buffer) (*html.Node, error) {
-	return html.Parse(bytes.NewReader(buf.Bytes()))
+	return html.Parse(&buf)
 }
 
 // CountDivTags should return the count of <div> tags in the document tree.
